@@ -1,20 +1,22 @@
 // Keep in sync with web/src/lib/validation.ts.
 
 export const ROLES = ["Teacher", "Staff", "Student leader"] as const;
-export const TOOL_IDS = ["chimes", "transcriber", "skills", "usage"] as const;
+export const REQUEST_KINDS = ["apply", "credit"] as const;
 export const SCHOOL_DOMAIN = "@ssc.edu.hk";
 
 export type Role = (typeof ROLES)[number];
-export type ToolId = (typeof TOOL_IDS)[number];
+export type RequestKind = (typeof REQUEST_KINDS)[number];
 
 export interface Application {
+  kind: RequestKind | "";
   firstName: string;
   lastName: string;
   email: string;
   team: string;
   role: Role | "";
-  tools: ToolId[];
   note: string;
+  amount: string;
+  keyRef: string;
   consent: boolean;
 }
 
@@ -26,21 +28,25 @@ const asString = (value: unknown): string => (typeof value === "string" ? value.
 
 export function normalise(input: unknown): Application {
   const raw = (input && typeof input === "object" ? input : {}) as Record<string, unknown>;
-  const tools = Array.isArray(raw.tools) ? raw.tools.filter((t): t is string => typeof t === "string") : [];
+  const kind = asString(raw.kind);
   return {
+    kind: (REQUEST_KINDS as readonly string[]).includes(kind) ? (kind as RequestKind) : "",
     firstName: asString(raw.firstName),
     lastName: asString(raw.lastName),
     email: asString(raw.email),
     team: asString(raw.team),
     role: asString(raw.role) as Role | "",
-    tools: tools as ToolId[],
     note: asString(raw.note),
+    amount: asString(raw.amount),
+    keyRef: asString(raw.keyRef),
     consent: raw.consent === true,
   };
 }
 
 export function validate(app: Application): FieldErrors {
   const errors: FieldErrors = {};
+
+  if (!REQUEST_KINDS.includes(app.kind as RequestKind)) errors.kind = "Choose apply for a key, or add credit.";
 
   if (!app.firstName) errors.firstName = "Enter your first name.";
   else if (app.firstName.length > 60) errors.firstName = "Keep it under 60 characters.";
@@ -57,11 +63,18 @@ export function validate(app: Application): FieldErrors {
 
   if (!ROLES.includes(app.role as Role)) errors.role = "Choose your role.";
 
-  if (app.tools.length === 0) errors.tools = "Pick at least one tool.";
-  else if (app.tools.some((t) => !TOOL_IDS.includes(t))) errors.tools = "Unknown tool selected.";
+  if (app.kind === "apply") {
+    if (app.note.length < 10) errors.note = "Tell us a little more (at least 10 characters).";
+    else if (app.note.length > 500) errors.note = "Keep it under 500 characters.";
+  }
 
-  if (app.note.length < 10) errors.note = "Tell us a little more (at least 10 characters).";
-  else if (app.note.length > 500) errors.note = "Keep it under 500 characters.";
+  if (app.kind === "credit") {
+    if (!app.amount) errors.amount = "Say how much credit to add.";
+    else if (app.amount.length > 40) errors.amount = "Keep it under 40 characters.";
+
+    if (!app.keyRef) errors.keyRef = "Say which key the credit is for.";
+    else if (app.keyRef.length > 80) errors.keyRef = "Keep it under 80 characters.";
+  }
 
   if (!app.consent) errors.consent = "Please confirm before sending.";
 

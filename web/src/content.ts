@@ -1,7 +1,5 @@
 // All draft copy for the page. Edit words here; layout lives in components/.
 
-import type { ToolId } from "./lib/validation";
-
 /** Replace with the real portal URL when ready. */
 export const portalUrl = "#";
 
@@ -23,25 +21,25 @@ export const hero = {
 };
 
 export const principles = {
-  title: ["Built for", "_the school_"],
-  body: "Every tool starts from how SSC already works — teams, timetables, lessons and meetings — and takes a few small jobs off the list",
+  title: ["Why this", "_portal_"],
+  body: "A single place for the school's tools, and for AI access that SSC can hand to a team.",
   cta: { label: "See the tools", href: "#tools" },
   items: [
     {
-      title: "One portal",
-      body: "Sign in once and reach Chimes, Transcriber, Skills library and API usage from a single place, with no separate logins for each tool.",
+      title: "One place",
+      body: "School tools open from the same portal.",
     },
     {
-      title: "Heard clearly",
-      body: "Lessons and meetings become clean text you can read back, search, and share with the people who missed them.",
+      title: "AI for SSC",
+      body: "People reach AI with a school OpenRouter key, rather than setting up access alone.",
     },
     {
-      title: "Ready to reuse",
-      body: "A good prompt or workflow only needs writing once. Save it as a skill and the whole team can use it.",
+      title: "Shared practice",
+      body: "A workflow that works can be saved and reused by the next person.",
     },
     {
-      title: "Usage in view",
-      body: "Teams that use the API can see how much of their allowance is in use, so there are no surprises at the end of term.",
+      title: "A balance you can see",
+      body: "What is left on a key is visible, so a team is not caught out when it runs low.",
     },
   ],
 };
@@ -54,7 +52,7 @@ export const marquee = {
 };
 
 export interface Tool {
-  id: ToolId;
+  id: string;
   number: string;
   name: string;
   short: string;
@@ -65,31 +63,27 @@ export const tools: Tool[] = [
     id: "chimes",
     number: "01",
     name: "Chimes",
-    short: "A calm way to reach your team. Send a short signal when a room changes, a deadline moves or a hand is needed, and it arrives where people already look.",
-  },
-  {
-    id: "transcriber",
-    number: "02",
-    name: "Transcriber",
-    short: "Record a lesson, a department meeting or a parent briefing and get a readable transcript back — for revision notes, minutes, or students catching up.",
+    short:
+      "A calm way to reach a team. Send a short signal when a room changes, a time moves, or a hand is needed, and it shows up where people already look.",
   },
   {
     id: "skills",
-    number: "03",
+    number: "02",
     name: "Skills library",
-    short: "When someone finds a prompt or workflow that works, they save it as a skill. Everyone on the team can find it, run it and improve it.",
+    short:
+      "Skills are AI workflows saved for a team. They run with that team's OpenRouter key, so someone can start from a skill instead of a blank prompt.",
   },
   {
     id: "usage",
-    number: "04",
-    name: "API usage",
-    short: "See at a glance how much of your team's monthly API allowance has been used, so the service stays fair for every department.",
+    number: "03",
+    name: "Usage",
+    short: "Look up a key and see what is left on it.",
   },
 ];
 
 export const toolsSection = {
-  title: ["Four tools,", "_one portal_"],
-  subtitle: "Chimes, Transcriber, Skills library _&_ API usage",
+  title: ["Chimes, skills", "_and usage_"],
+  subtitle: "Chimes, Skills library _&_ Usage",
   cta: { label: "Open the portal", href: portalUrl },
 };
 
@@ -98,52 +92,29 @@ export const carousel = {
   body: "From the classroom to the general office, the portal fits into the work people already do.",
   cta: { label: "Request an API key", href: "#apply" },
   cards: [
-    { title: "Teachers", body: "Turn lessons into notes, reuse marking prompts and send quick room-change chimes." },
-    { title: "Students", body: "Read back what was said in class and catch up on lessons they missed." },
-    { title: "Departments", body: "Share a library of skills so good workflows spread across the whole team." },
-    { title: "General office", body: "Transcribe briefings and keep notices moving without another group chat." },
-    { title: "IT team", body: "Issue API keys to teams and keep an eye on allowance across the school." },
-    { title: "Clubs & events", body: "Coordinate rehearsals, fixtures and trips with simple signals to members." },
+    { title: "Teachers", body: "Transcribe a lesson, start from a shared skill, and see what the key has left." },
+    { title: "Students", body: "Read back a class and catch up on one they missed." },
+    { title: "Departments", body: "Share skills so a workflow is there for the whole team." },
+    { title: "General office", body: "Transcribe a briefing and keep the text." },
+    { title: "IT team", body: "Take requests for keys and credit, and watch what each key has left." },
+    { title: "Clubs & events", body: "Reach members with a Chimes signal." },
   ],
 };
 
 export const stack = {
-  title: ["Simple stack", "_& open access_"],
-  body: "Everyone at SSC can use the portal. Teams that build their own scripts can request a key.",
-  steps: ["Open to every SSC account", "Four tools behind one sign-in", "Optional team API keys", "Usage visible to each team"],
-  diagram: {
-    top: { title: "AI.SSC Portal", meta: ["sign-in", "chimes", "transcriber", "skills", "usage"] },
-    hub: { title: "Everyone at SSC", meta: "open access" },
-    left: {
-      label: "tools/",
-      items: [
-        { code: "chimes.send()", meta: "Signals for teams", icon: "bell" },
-        { code: "transcribe(audio)", meta: "Speech to text", icon: "wave" },
-      ],
-    },
-    right: {
-      label: "library/",
-      featured: { code: "skills.run()", meta: "(shared=true)", sub: "Skills library" },
-      items: [
-        { code: "skills.save()", icon: "save" },
-        { code: "skills.search()", icon: "search" },
-      ],
-    },
-    bottom: {
-      label: "api/",
-      items: [
-        { code: "team.requestKey()", meta: "Optional · school email", icon: "key" },
-        { code: "usage.check()", meta: "Allowance in view", icon: "chart" },
-        { code: "limits.fair()", meta: "Shared across teams", icon: "shield" },
-      ],
-    },
-  },
+  title: ["Speech into", "_text_"],
+  body: "Transcriber turns speech into text you can read back.",
+  label: "Sample caption",
+  sentence: "Please move this afternoon's meeting to the library, and send the notes to anyone who cannot attend.",
 };
 
 export const apply = {
-  title: ["Need API access?", "Request a key for _your team_"],
-  body: "The portal is open to everyone. Use this form only if your team needs an API key for scripts or apps. During early access we only check the request — no key is issued and nothing is stored.",
+  title: ["Need a key?", "Apply, or add _credit_"],
+  body: "The portal is open to everyone. Use this form to ask for an OpenRouter API key, or to add credit to a key your team already has. During early access we only check the request — no key is created, no credit is added, and nothing is stored.",
   fields: {
+    kind: "What do you need?*",
+    apply: "Apply for a key",
+    credit: "Add credit",
     firstName: "First name*",
     lastName: "Last name*",
     email: "School email*",
@@ -151,14 +122,17 @@ export const apply = {
     team: "Team or department*",
     role: "Your role*",
     rolePlaceholder: "Choose one",
-    tools: "Tools you'll call via API*",
-    note: "What does the team need?",
+    note: "What will the team use the key for?*",
+    amount: "How much credit?*",
+    amountPlaceholder: "For example, 50",
+    keyRef: "Which key?*",
+    keyPlaceholder: "Team name or key label",
     consent: "By submitting, I confirm I'm requesting on behalf of my team and will follow the school's acceptable-use rules.*",
   },
   submit: "Send request",
   submitting: "Checking…",
   successTitle: "Request checked.",
-  successBody: "Everything looks right. Keys are not being issued yet, so nothing was saved. We'll open requests properly soon.",
+  successBody: "Everything looks right. No key was created and no credit was added, and nothing was saved.",
   again: "Start another request",
   networkError: "We couldn't reach the server. Please try again in a moment.",
 };

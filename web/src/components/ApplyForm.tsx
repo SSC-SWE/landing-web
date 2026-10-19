@@ -1,22 +1,35 @@
 import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
-import { apply, tools } from "../content";
-import { ROLES, validate, type Application, type FieldErrors, type ToolId } from "../lib/validation";
+import { apply } from "../content";
+import { ROLES, validate, type Application, type FieldErrors, type RequestKind } from "../lib/validation";
 import { Lines } from "./Lines";
 
 type Status = "idle" | "submitting" | "success";
 
 const EMPTY: Application = {
+  kind: "",
   firstName: "",
   lastName: "",
   email: "",
   team: "",
   role: "",
-  tools: [],
   note: "",
+  amount: "",
+  keyRef: "",
   consent: false,
 };
 
-const FIELD_ORDER: (keyof Application)[] = ["firstName", "lastName", "email", "team", "role", "tools", "note", "consent"];
+const FIELD_ORDER: (keyof Application)[] = [
+  "kind",
+  "firstName",
+  "lastName",
+  "email",
+  "team",
+  "role",
+  "note",
+  "amount",
+  "keyRef",
+  "consent",
+];
 
 function trimmed(values: Application): Application {
   return {
@@ -26,6 +39,8 @@ function trimmed(values: Application): Application {
     email: values.email.trim(),
     team: values.team.trim(),
     note: values.note.trim(),
+    amount: values.amount.trim(),
+    keyRef: values.keyRef.trim(),
   };
 }
 
@@ -44,11 +59,6 @@ export function ApplyForm() {
 
   const onText = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     update({ ...values, [e.target.name]: e.target.value });
-  };
-
-  const toggleTool = (id: ToolId) => {
-    const has = values.tools.includes(id);
-    update({ ...values, tools: has ? values.tools.filter((t) => t !== id) : [...values.tools, id] });
   };
 
   const focusFirstError = (errs: FieldErrors) => {
@@ -122,6 +132,7 @@ export function ApplyForm() {
     ) : null;
 
   const f = apply.fields;
+  const kind = values.kind;
 
   return (
     <section className="section apply" id="apply" aria-labelledby="apply-title">
@@ -142,6 +153,27 @@ export function ApplyForm() {
           </div>
         ) : (
           <form ref={formRef} onSubmit={onSubmit} noValidate>
+            <fieldset className="field" aria-describedby={errors.kind ? "kind-error" : undefined}>
+              <legend className="field__label">{f.kind}</legend>
+              <div className="checks">
+                {(["apply", "credit"] as RequestKind[]).map((option, i) => (
+                  <label key={option} className="check">
+                    <input
+                      type="radio"
+                      name="kind"
+                      value={option}
+                      checked={kind === option}
+                      onChange={onText}
+                      data-field={i === 0 ? "kind" : undefined}
+                      aria-invalid={errors.kind ? true : undefined}
+                    />
+                    <span>{option === "apply" ? f.apply : f.credit}</span>
+                  </label>
+                ))}
+              </div>
+              {errorText("kind")}
+            </fieldset>
+
             <label className="field">
               <span className="field__label">{f.firstName}</span>
               <input name="firstName" autoComplete="given-name" value={values.firstName} onChange={onText} {...errorProps("firstName")} />
@@ -189,30 +221,40 @@ export function ApplyForm() {
               {errorText("role")}
             </label>
 
-            <fieldset className="field" aria-describedby={errors.tools ? "tools-error" : undefined}>
-              <legend className="field__label">{f.tools}</legend>
-              <div className="checks">
-                {tools.map((tool, i) => (
-                  <label key={tool.id} className="check">
-                    <input
-                      type="checkbox"
-                      checked={values.tools.includes(tool.id)}
-                      onChange={() => toggleTool(tool.id)}
-                      data-field={i === 0 ? "tools" : undefined}
-                      aria-invalid={errors.tools ? true : undefined}
-                    />
-                    <span>{tool.name}</span>
-                  </label>
-                ))}
-              </div>
-              {errorText("tools")}
-            </fieldset>
+            {kind === "apply" && (
+              <label className="field">
+                <span className="field__label">{f.note}</span>
+                <textarea name="note" rows={3} maxLength={500} value={values.note} onChange={onText} {...errorProps("note")} />
+                {errorText("note")}
+              </label>
+            )}
 
-            <label className="field">
-              <span className="field__label">{f.note}</span>
-              <textarea name="note" rows={3} maxLength={500} value={values.note} onChange={onText} {...errorProps("note")} />
-              {errorText("note")}
-            </label>
+            {kind === "credit" && (
+              <>
+                <label className="field">
+                  <span className="field__label">{f.amount}</span>
+                  <input
+                    name="amount"
+                    value={values.amount}
+                    onChange={onText}
+                    placeholder={f.amountPlaceholder}
+                    {...errorProps("amount")}
+                  />
+                  {errorText("amount")}
+                </label>
+                <label className="field">
+                  <span className="field__label">{f.keyRef}</span>
+                  <input
+                    name="keyRef"
+                    value={values.keyRef}
+                    onChange={onText}
+                    placeholder={f.keyPlaceholder}
+                    {...errorProps("keyRef")}
+                  />
+                  {errorText("keyRef")}
+                </label>
+              </>
+            )}
 
             <label className="check check--consent">
               <input

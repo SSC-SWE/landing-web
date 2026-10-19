@@ -53,7 +53,7 @@ async function handleApplication(req: IncomingMessage, res: ServerResponse): Pro
   // Validate-only: nothing is stored, mailed, or issued.
   send(res, 200, {
     ok: true,
-    message: "Request checked. Keys are not being issued yet, so nothing was saved.",
+    message: "Request checked. No key was created and no credit was added, so nothing was saved.",
   });
 }
 
