@@ -5,6 +5,9 @@ import { Lines } from "./Lines";
 
 type Status = "idle" | "submitting" | "success";
 
+/** API origin, overridable at build time (VITE_API_BASE) when the server is hosted apart from the site. */
+const API_BASE: string = import.meta.env.VITE_API_BASE ?? "/api";
+
 const EMPTY: Application = {
   kind: "",
   firstName: "",
@@ -83,7 +86,7 @@ export function ApplyForm() {
 
     setStatus("submitting");
     try {
-      const res = await fetch("/api/applications", {
+      const res = await fetch(`${API_BASE}/applications`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

@@ -5,7 +5,7 @@ import { Arrow, TextLink } from "./Arrow";
 import { rich } from "./Lines";
 
 /** Bump `v` whenever public/hero.mp4 is replaced so browsers drop their cached copy. */
-const HERO_VIDEO = "/hero.mp4?v=2";
+const HERO_VIDEO = `${import.meta.env.BASE_URL}hero.mp4?v=2`;
 
 export function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -27,7 +27,7 @@ export function Hero() {
             ref={videoRef}
             className="hero__video"
             src={HERO_VIDEO}
-            poster="/hero-poster.svg"
+            poster={`${import.meta.env.BASE_URL}hero-poster.svg`}
             autoPlay={!reducedMotion}
             muted
             loop
