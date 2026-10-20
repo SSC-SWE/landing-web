@@ -127,7 +127,7 @@ export const stack = {
   title: ["Speech into", "_text_"],
   body: "Record a lesson or a meeting in English, Cantonese or Mandarin, and Transcriber returns a full transcript, a short summary and ready-to-send meeting minutes. Anyone at SSC can use it, so the student who was off sick and the colleague who couldn't attend both get the same record.",
   label: "Live transcript",
-  sentence: "So for Saint Stephen's let us strive, to fight, to win with steadfast pride.",
+  sentence: "So for Saint Stephen's let us strive,\nto fight, to win with steadfast pride.",
   cta: { label: "Open Transcriber", href: transcriberUrl },
 };
 

@@ -435,6 +435,12 @@
   color: var(--accent);
 }
 
+.caption__break {
+  flex-basis: 100%;
+  width: 0;
+  height: 0;
+}
+
 /* Contact */
 
 .apply {

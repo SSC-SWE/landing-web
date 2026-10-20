@@ -1,10 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { stack } from "../content";
 import { usePrefersReducedMotion } from "../lib/motion";
 import { Lines } from "./Lines";
 import { TextLink } from "./Arrow";
 
-const WORDS = stack.sentence.split(" ");
+const LINES = stack.sentence.split("\n");
+const WORDS = LINES.flatMap((line, li) =>
+  line
+    .trim()
+    .split(" ")
+    .map((word, wi, arr) => ({ word, br: wi === arr.length - 1 && li < LINES.length - 1 })),
+);
 
 export function Stack() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -55,12 +61,13 @@ export function Stack() {
         <figure className="caption" data-reveal>
           <figcaption className="caption__label">{stack.label}</figcaption>
           <p className="caption__line">
-            {WORDS.map((word, i) => {
+            {WORDS.map(({ word, br }, i) => {
               const state = reduced ? "is-said" : i < active ? "is-said" : i === active ? "is-now" : "is-ahead";
               return (
-                <span key={`${word}-${i}`} className={`caption__word ${state}`}>
-                  {word}
-                </span>
+                <Fragment key={i}>
+                  <span className={`caption__word ${state}`}>{word}</span>
+                  {br && <span className="caption__break" aria-hidden="true" />}
+                </Fragment>
               );
             })}
           </p>
