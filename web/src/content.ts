@@ -3,6 +3,9 @@
 /** Replace with the real portal URL when ready. */
 export const portalUrl = "#";
 
+/** Transcriber is not live yet — placeholder target for its section button. */
+export const transcriberUrl = "https://ai.ssc.edu.hk/transcriber";
+
 export const site = {
   wordmark: "AI.SSC",
   domain: "ai.ssc.edu.hk",
@@ -125,6 +128,7 @@ export const stack = {
   body: "Record a lesson or a meeting in English, Cantonese or Mandarin, and Transcriber returns a full transcript, a short summary and ready-to-send meeting minutes. Anyone at SSC can use it, so the student who was off sick and the colleague who couldn't attend both get the same record.",
   label: "Live transcript",
   sentence: "So for Saint Stephen's let us strive, to fight, to win with steadfast pride.",
+  cta: { label: "Open Transcriber", href: transcriberUrl },
 };
 
 export const apply = {

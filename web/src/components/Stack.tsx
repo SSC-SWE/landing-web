@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { stack } from "../content";
 import { usePrefersReducedMotion } from "../lib/motion";
 import { Lines } from "./Lines";
+import { TextLink } from "./Arrow";
 
 const WORDS = stack.sentence.split(" ");
 
@@ -46,6 +47,9 @@ export function Stack() {
           <p className="lead" data-reveal>
             {stack.body}
           </p>
+          <TextLink href={stack.cta.href} data-reveal>
+            {stack.cta.label}
+          </TextLink>
         </div>
 
         <figure className="caption" data-reveal>
