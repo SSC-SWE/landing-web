@@ -574,7 +574,11 @@
   }
 
   .tools__sticky {
-    position: static;
+    /* .section > :not(...) outranks any `static` here, leaving the sticky
+       offset (top: 140px) live on a relative element — it slid the block
+       140px down into the first list item. Cancel the offset instead. */
+    position: relative;
+    top: auto;
   }
 
   .tools__list {
